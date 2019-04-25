@@ -1,9 +1,6 @@
-#!/usr/local/bin/python3
-# -*- coding: utf-8 -*-
-
-#https://github.com/liris/websocket-client
 ## sudo pip install --user websocket-client
 from websocket import create_connection
+import random
 
 class mailbox(object):
 	"""10 minute mailbox"""
@@ -12,33 +9,35 @@ class mailbox(object):
 		self.ws = create_connection("wss://dropmail.me/websocket")
 		self.next = self.ws.recv
 		self.close = self.ws.close
-		self.email = self.next()[1:].split(":")[0]
+		self.email_hashes = []
+		email_hash = self.next()[1:]
+		self.email_hashes.append(email_hash)
 		self.next()
 
-def main(box):
-	#stdlib
-	import sys
-	from json import loads
-	from subprocess import call
-	from datetime import datetime
-	
-	call(["echo '{0}' | pbcopy".format(box.email)], shell=True)
-	print (box.email+" was copied to clipboard")
-	while True:
-		result =  box.next()
-		try:
-			print("Recieved following at {0}".format( datetime.now()))
-			for k in loads(result[1:]).items():
-				print("\t%s: %s" % k)
-		except:
-			print("Recieved:{1} {0}\n".format(result, datetime.now()))
+	#adds a random email, returns its address
+	def addRandomEmail(self):
+		self.ws.send("M")
+		email_hash = self.next()[1:]
+		self.email_hashes.append(email_hash)
+		return email_hash.split(":")[0]
+
+	#requires email and has in form name@domain:hash
+	def addEmail(self, email_hash):
+		self.ws.send("R{}".format(email_hash))
+		self.email_hashes.append(self.next()[1:])
+
+	#returns the list of emails present in the socket
+	def getEmails(self):
+		emails = []
+		for email_hash in self.email_hashes:
+			emails.append(email_hash.split(":")[0])
+		return emails
 
 if __name__ == '__main__':
-	import os
-	print("PID: {0}\nIf you can't quite, run 'kill {0}'\n".format(os.getpid()))
-	try:
-		box = mailbox()
-		main(box)
-	except KeyboardInterrupt:
-		box.close()
-		sys.exit(0)
+	box = mailbox()
+	#adding emails
+	print(box.addRandomEmail())
+	print(box.email_hashes)
+	print(box.getEmails())
+	#reading mail
+	print(box.next())
