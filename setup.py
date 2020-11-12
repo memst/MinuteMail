@@ -14,7 +14,8 @@ setuptools.setup(
     url="https://github.com/memst/MinuteMail",
     packages=setuptools.find_packages(),
     install_requires=[
-    	'websocket-client'
+    	'websocket-client',
+        'json'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
