@@ -22,8 +22,9 @@ class mailbox(object):
 
 	#requires email and has in form name@domain:hash
 	def add_hash(self, email_hash):
-		self.ws.send("R{}".format(email_hash))
-		self.email_hashes.append(self.next()[1:])
+		if email_hash not in self.email_hashes:
+			self.ws.send("R{}".format(email_hash))
+			self.email_hashes.append(self.next()[1:])
 
 	#returns the list of emails present in the socket
 	def get_emails(self):
