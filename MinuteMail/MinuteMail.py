@@ -22,6 +22,7 @@ class mailbox(object):
 
 	#requires email and has in form name@domain:hash
 	def add_hash(self, email_hash):
+		email_hash = email_hash.strip()
 		if email_hash not in self.email_hashes:
 			self.ws.send("R{}".format(email_hash))
 			self.email_hashes.append(self.next()[1:])
@@ -36,8 +37,8 @@ class mailbox(object):
 if __name__ == '__main__':
 	box = mailbox()
 	#adding emails
-	print(box.addRandomEmail())
+	print(box.add_random_email())
 	print(box.email_hashes)
-	print(box.getEmails())
+	print(box.get_emails())
 	#reading mail
 	print(box.next())
