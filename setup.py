@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="MinuteMail", # Replace with your own username
-    version="0.1.0",
+    version="0.1.1",
     author="memst",
     author_email="stankev.martynas@gmail.com",
     description="Package that lets you generate email addresses and read their mail through dropmail.me websocket.",
@@ -14,8 +14,7 @@ setuptools.setup(
     url="https://github.com/memst/MinuteMail",
     packages=setuptools.find_packages(),
     install_requires=[
-    	'websocket-client',
-        'json'
+    	'websocket-client'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

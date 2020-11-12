@@ -3,7 +3,7 @@ A python package for recieving mail from temporary email addresses.
 
 ## Installation
 
-This package is _to be published_ on PyPi, to install it run
+This package has been published on PyPi, to install it run
 ```pip install MinuteMail```
 
 ## Usage
