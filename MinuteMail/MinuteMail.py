@@ -1,9 +1,8 @@
-## sudo pip install --user websocket-client
+# pip install websocket-client
 from websocket import create_connection
 import random
 
 class mailbox(object):
-	"""10 minute mailbox"""
 	def __init__(self):
 		super(mailbox, self).__init__()
 		self.ws = create_connection("wss://dropmail.me/websocket")
@@ -15,19 +14,19 @@ class mailbox(object):
 		self.next()
 
 	#adds a random email, returns its address
-	def addRandomEmail(self):
+	def add_random_email(self):
 		self.ws.send("M")
 		email_hash = self.next()[1:]
 		self.email_hashes.append(email_hash)
 		return email_hash.split(":")[0]
 
 	#requires email and has in form name@domain:hash
-	def addEmail(self, email_hash):
+	def add_hash(self, email_hash):
 		self.ws.send("R{}".format(email_hash))
 		self.email_hashes.append(self.next()[1:])
 
 	#returns the list of emails present in the socket
-	def getEmails(self):
+	def get_emails(self):
 		emails = []
 		for email_hash in self.email_hashes:
 			emails.append(email_hash.split(":")[0])
