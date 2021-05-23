@@ -8,9 +8,10 @@ class mailbox(object):
 		self.ws = create_connection("wss://dropmail.me/websocket")
 		self.close = self.ws.close
 		self.email_hashes = []
-		email_hash = self.ws.recv()[1:]
+		self.id = json.loads(self.ws.recv()[1:])['id']
+		email_hash = self.ws.recv()
 		self.email_hashes.append(email_hash)
-		self.ws.recv()
+		self.ws.recv() #Discards the list of avilable domains
 
 	#get next email
 	def next(self):
@@ -44,5 +45,6 @@ if __name__ == '__main__':
 	print(box.add_random_email())
 	print(box.email_hashes)
 	print(box.get_emails())
+	print(box.id)
 	#reading mail
 	print(box.next())
